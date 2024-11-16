@@ -1,0 +1,46 @@
+# Ignore build artifacts
+/build/
+.pio/
+.vscode/
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.o
+*.d
+
+# Ignore PlatformIO-specific files
+*.pyc
+*.pyo
+__pycache__/
+.env
+.cache/
+.clang_complete
+project.ini.bkp
+project_options.json
+
+# Ignore generated files
+*.log
+*.csv
+*.out
+
+# Ignore backup files
+*.bak
+*.swp
+*~
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore test output
+/test/output/
+
+# Ignore library dependencies downloaded by PlatformIO
+.libdeps/
+
+
+# Ignore Google Drive generated files
+*.ini

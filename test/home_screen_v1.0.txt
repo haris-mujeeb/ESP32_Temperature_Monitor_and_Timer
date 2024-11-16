@@ -1,0 +1,137 @@
+#include <stdint.h>
+#include <algorithm>
+#include "HardwareSerial.h"
+#include "esp32-hal.h"
+#include "display_state.hpp"
+
+// Concrete States
+class HomeScreen : public DisplayState {
+public:
+  void init(DisplayContext& context) override {
+    tft.fillScreen(ST77XX_BLACK);
+
+    // Temperature box and text
+    tft.fillRect(5, 5, 130, 47, ST77XX_COLMOD);
+    tft.setTextColor(ST77XX_WHITE);
+    tft.setTextSize(4);
+    tft.setCursor(5+10, 5+10);
+    tft.print("Temp:");
+
+    // Time box and text
+    tft.fillRect(5, 5+47+10, 130, 47, ST77XX_TEON);
+    tft.setTextColor(ST77XX_WHITE);
+    tft.setTextSize(4);
+    tft.setCursor(5+10, 5+47+10+10);
+    tft.print("Time:");
+
+    // Draw the outline of the progress bar
+    tft.drawRect(5, 5+47+10+47+10, SCREEN_WIDTH - 10, 48, ST77XX_WHITE);
+    readTemperature();
+    timeElapsed = 0;
+    timerAlreadyRunning = 0;
+  }
+
+  void update(DisplayContext& context) override {
+    readTemperature();
+    if (temperature > temperatureThreshold) {
+      if (timerAlreadyRunning){ 
+        timeElapsed += (millis() - lastTime);
+        tempBoxColor = 0x0700;
+        timeBoxColor = 0x0700;
+        if (timeElapsed > timeThreshold) {timeElapsed = timeThreshold;}
+      } // adding recorded time
+      lastTime = millis(); // timer reset
+      timerAlreadyRunning = 1;
+    } else {
+      tempBoxColor = ST77XX_ORANGE;
+      timeBoxColor = ST77XX_ORANGE;
+      timerAlreadyRunning = 0;
+      }
+
+    // Update temp and time boxes
+    tft.fillRect(5+130+10, 5, SCREEN_WIDTH-5-130-10-5, 48, tempBoxColor);     // Draw temp box 
+    tft.fillRect(5+130+10, 5+47+10, SCREEN_WIDTH-5-130-10-5, 48, timeBoxColor);     // Draw time box 
+
+    // Update temperature values
+    char buffer[5];
+    tft.setCursor(5+130+10+10, 5+10);
+    tft.setTextSize(4);
+    tft.setTextColor(ST77XX_WHITE);
+    dtostrf(temperature, 5, 1, buffer);
+    tft.print(buffer);
+    
+    // Update time values
+    tft.setCursor(5+130+10+10, 5+47+10+10);
+    tft.setTextSize(4);
+    tft.setTextColor(ST77XX_WHITE);
+    millis2Time(timeElapsed, buffer, sizeof(buffer));
+    tft.print(buffer);
+
+    // render progress bar
+    float progressRatio = (float)timeElapsed / (float)timeThreshold;
+    unsigned int filledWidth = progressRatio * (SCREEN_WIDTH - 20);   
+    if(progressRatio > 0.99) {
+      progressBarColor = ST77XX_RED;
+      tft.setTextSize(4);
+      tft.setTextColor(ST77XX_WHITE);
+      tft.setCursor(5 + 10, 5+47+10+47+10+2+10);
+      tft.print("TIME'S UP!!!");
+    }
+    else if (progressRatio > 0.35) {
+      progressBarColor = ST77XX_GREEN;
+      tft.setTextSize(4);
+      snprintf(buffer, sizeof(buffer), "%d%%", (int)(progressRatio * 100));
+      tft.setTextColor(ST77XX_WHITE);
+      tft.setCursor(5 + 10 + filledWidth - 75, 5+47+10+47+10+2+10);
+      tft.print(buffer);
+    } else {    
+      progressBarColor = ST77XX_GREEN;
+    }
+    if (updateProgressBar) tft.fillRect(5+2, 5+47+10+47+10+2, progressRatio*SCREEN_WIDTH-10-4, 48-4, progressBarColor);     // Draw filled portion
+
+    // Serial.print(timeElapsed);
+    // Serial.print(", ");
+    // Serial.print(timeThreshold);
+    // Serial.print(", ");
+    // Serial.print(progressRatio);
+    // Serial.print(", ");
+    // Serial.println(filledWidth);
+  }
+
+  void exit(DisplayContext& context) override {}
+
+  private:
+    void readTemperature();
+    void millis2Time(unsigned long milliSeconds, char* buffer, const size_t bufferSize);
+
+    void changetempBoxColor(uint16_t);
+    uint16_t timeBoxColor = ST77XX_ORANGE; // pale yellow
+    bool updatetimeBox;
+
+    void changetimeBoxColor(uint16_t);
+    uint16_t tempBoxColor = ST77XX_ORANGE; // pale yellow
+
+    void changeprogressBarColor(uint16_t);
+    uint16_t progressBarColor = ST77XX_GREEN; // pale yellow
+    bool updateProgressBar;
+
+    float temperature = 0; // deg C
+    float temperatureThreshold = 50; // deg C
+    unsigned long timeElapsed = 0;
+    unsigned long lastTime;
+    unsigned long timeThreshold = 2000; // in ms
+    bool  timerAlreadyRunning = 0;
+};
+
+void HomeScreen::readTemperature(){
+  temperature += 11.27;
+  delay(100);
+    if (temperature > 300) temperature = -22;
+}
+
+void HomeScreen::millis2Time(unsigned long int milliSeconds, char* buffer, const size_t bufferSize) {
+  unsigned long int seconds = milliSeconds/1000.0;
+  unsigned long int minutes = seconds/60;
+  seconds = seconds % 60; // removing min from total
+  snprintf(buffer, bufferSize, "%lu:%02lu", minutes, seconds);
+}
