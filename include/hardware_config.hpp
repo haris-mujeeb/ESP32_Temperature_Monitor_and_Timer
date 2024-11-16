@@ -9,7 +9,7 @@
 // Pin definitions for various hardware components
 
 // Temperature and Time Settings
-#define DEFAULT_TEMP_THRESHOLD 50.0   // Default temperature threshold in Celsius
+#define DEFAULT_TEMP_THRESHOLD 150.0   // Default temperature threshold in Celsius
 #define DEFAULT_TIME_THRESHOLD 20 * 1000 // Default time threshold in milliseconds (20 seconds)
 
 // EEPROM settings

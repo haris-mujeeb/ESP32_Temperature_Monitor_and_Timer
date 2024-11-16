@@ -15,7 +15,7 @@ constexpr int PROGRESS_BAR_X = 2, PROGRESS_BAR_Y = TIME_BOX_Y + TEMP_BOX_HEIGHT 
 constexpr int PROGRESS_BAR_WIDTH = SCREEN_WIDTH - 10, PROGRESS_BAR_HEIGHT = 48;
 
 // Color definitions
-constexpr uint16_t TIME_BOX_DEFAULT_COLOR = ST77XX_BLACK;
+constexpr uint16_t TIME_BOX`_DEFAULT_COLOR = ST77XX_BLACK;
 constexpr uint16_t TEMP_BOX_DEFAULT_COLOR = ST77XX_BLACK;
 constexpr uint16_t TIME_TITLE_COLOR = 0xfea0; // gold
 constexpr uint16_t TEMP_TITLE_COLOR = 0x05ff; // deepskyblue

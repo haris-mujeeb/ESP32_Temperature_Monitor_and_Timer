@@ -16,7 +16,7 @@ constexpr int TEMP_THRESHOLD_ADDR = MAGIC_NUMBER_ADDR + sizeof(uint32_t);
 constexpr int TIME_THRESHOLD_ADDR = TEMP_THRESHOLD_ADDR + sizeof(float);
 constexpr int TIME_ELAPSED_ADDR = TIME_THRESHOLD_ADDR + sizeof(unsigned long);
 constexpr uint32_t MAGIC_NUMBER = 0xABCD1234; // Define a unique magic number
-constexpr int INACTIVITY_TIMEOUT_MS = 3000; // 10 sec
+constexpr int INACTIVITY_TIMEOUT_MS = 10000; // 10 sec
 
 
 class DisplayContext; // Forward declaration

@@ -59,7 +59,7 @@ void HomeScreen::drawProgressBarOutline() {
 
 void HomeScreen::getTemperature() {
     if (currentTime - thermocoupleLastUpdatedTime > 500) {
-        temperature = tempSensor.readTemperature()+100;
+        temperature = tempSensor.readTemperature();
         checkTempSensor();
         thermocoupleLastUpdatedTime = currentTime;
     }
