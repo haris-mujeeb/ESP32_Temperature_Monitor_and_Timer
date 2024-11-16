@@ -31,3 +31,35 @@ https://github.com/user-attachments/assets/7d30d928-8f08-4236-9cfe-6035c38b2132
 #define ROTARY_PIN_B   26  // Signal pin B
 #define ROTARY_PIN_SW   25  // Push button pin
 ```
+# How to run:
+This project can be build and uploaded to the ESP32 (or Arduino) using PlatformIO:
+
+### 1. **Build the Project**
+To compile the project:  
+```bash
+pio run
+```
+
+### 2. **Upload the Firmware (Optional)**
+To build and upload the firmware to the board:  
+```bash
+pio run --target upload
+```
+
+### 3. **Monitor Serial Output**
+To open the serial monitor:  
+```bash
+pio device monitor
+```
+
+### 4. **Combined Build and Monitor** (additional)
+If you want to build, upload, and monitor in sequence:  
+```bash
+pio run --target upload && pio device monitor
+```
+
+### Common Serial Monitor Options (additional)
+You can specify the baud rate (this project uses 9600):  
+```bash
+pio device monitor --baud 9600
+```
