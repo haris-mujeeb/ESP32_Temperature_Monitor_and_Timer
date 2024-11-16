@@ -37,6 +37,6 @@ private:
   void selectCurrentOption(DisplayContext& context);
   void checkInactivityTimeout(DisplayContext& context);
   void resetTimeout();
-  const GFXfont * TEXT_FONT = &FreeSansBoldOblique18pt7b;
+  const GFXfont * TEXT_FONT = &FreeMonoBold18pt7b;
   const GFXfont * NUMERIC_FONT = &FreeMonoBoldOblique18pt7b;
 };

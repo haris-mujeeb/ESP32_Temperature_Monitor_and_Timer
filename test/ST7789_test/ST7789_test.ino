@@ -11,7 +11,7 @@
 #define TFT_BLK 32
 
 #define SCREEN_WIDTH 320
-#define SCREEN_HIGHT 172
+#define SCREEN_HEIGHT 172
 
 #define FRAME_RATE 2
 
@@ -26,7 +26,7 @@ void setup(void) {
   Serial.begin(9600);
   Serial.print(F("Starting ..."));
 
-  tft.init(SCREEN_HIGHT, SCREEN_WIDTH);  // Init ST7789 172x320
+  tft.init(SCREEN_HEIGHT, SCREEN_WIDTH);  // Init ST7789 172x320
 
   // SPI speed defaults to SPI_DEFAULT_FREQ defined in the library, you can override it here
   // Note that speed allowable depends on chip and quality of wiring, if you go too fast, you
@@ -58,7 +58,7 @@ void loop() {
 }
 
 #define TEMP_BOX_WIDTH (SCREEN_WIDTH / 2)
-#define TEMP_BOX_HEIGHT (SCREEN_HIGHT / 2)
+#define TEMP_BOX_HEIGHT (SCREEN_HEIGHT / 2)
 
 
 void drawTemperatureBox() {
@@ -71,9 +71,9 @@ void drawTemperatureBox() {
 
 void isHigherThanThreshold(const float number, const float threshold) {
   if (number > threshold) {
-    tft.fillRect(10 + TEMP_BOX_WIDTH, 0, TEMP_BOX_WIDTH, TEMP_BOX_HEIGHT, ST77XX_GREEN);
-  } else {
     tft.fillRect(10 + TEMP_BOX_WIDTH, 0, TEMP_BOX_WIDTH, TEMP_BOX_HEIGHT, ST77XX_RED);
+  } else {
+    tft.fillRect(10 + TEMP_BOX_WIDTH, 0, TEMP_BOX_WIDTH, TEMP_BOX_HEIGHT, ST77XX_GREEN);
     }
 }
 

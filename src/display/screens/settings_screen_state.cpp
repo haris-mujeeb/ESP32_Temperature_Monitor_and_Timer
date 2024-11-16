@@ -54,7 +54,7 @@ void SettingsScreen::drawMenuItem(int index, bool isSelected) {
   int y = 5 + index * (MENU_ITEM_HEIGHT + 1);
   tft.fillRect(5, y, SCREEN_WIDTH - 10, MENU_ITEM_HEIGHT - 5, isSelected ? SELECTED_COLOR : UNSELECTED_COLOR);
   uint16_t fontColor = isSelected ? ST77XX_BLACK : ST77XX_WHITE;
-  drawText(15, y + 3, menuItems[index], 1, TEXT_FONT, fontColor);
+  drawText(15, y , menuItems[index], 1, TEXT_FONT, fontColor);
 }
 
 void SettingsScreen::moveSelectionUp() {
