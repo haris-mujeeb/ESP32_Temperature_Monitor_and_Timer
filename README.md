@@ -1,4 +1,5 @@
 # ESP32 Temperature Monitor and Timer
+A ESP32 based Temperture monitor and timer with ST7789 TFT Display
 
 https://github.com/user-attachments/assets/7d30d928-8f08-4236-9cfe-6035c38b2132
 
